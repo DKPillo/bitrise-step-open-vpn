@@ -6,6 +6,7 @@ echo "host: $host"
 echo "port: $port"
 echo "proto: $proto"
 echo "ca_crt: $(if [ ! -z "$ca_crt" ]; then echo "***"; fi)"
+echo "ta_key: $(if [ ! -z "$ta_key" ]; then echo "***"; fi)"
 echo "client_crt: $(if [ ! -z "$client_crt" ]; then echo "***"; fi)"
 echo "client_key: $(if [ ! -z "$client_key" ]; then echo "***"; fi)"
 echo ""
@@ -21,6 +22,7 @@ case "$OSTYPE" in
     echo "Configuring for Ubuntu"
 
     echo ${ca_crt} | base64 -d > /etc/openvpn/ca.crt
+    echo ${ta_key} | base64 -d > /etc/openvpn/ta.key
     echo ${client_crt} | base64 -d > /etc/openvpn/client.crt
     echo ${client_key} | base64 -d > /etc/openvpn/client.key
 
@@ -38,6 +40,7 @@ verb 3
 ca ca.crt
 cert client.crt
 key client.key
+tls-auth ta.key 1
 EOF
 
     echo ""
@@ -59,12 +62,13 @@ EOF
     echo "Configuring for Mac OS"
 
     echo ${ca_crt} | base64 -D -o ca.crt
+    echo ${ta_key} | base64 -D -o ta.key
     echo ${client_crt} | base64 -D -o client.crt
     echo ${client_key} | base64 -D -o client.key
     echo ""
 
     echo "Run openvpn"
-      sudo openvpn --client --dev tun --proto ${proto} --remote ${host} ${port} --resolv-retry infinite --nobind --persist-key --persist-tun --comp-lzo --verb 3 --ca ca.crt --cert client.crt --key client.key > $log_path 2>&1 &
+      sudo openvpn --client --dev tun --proto ${proto} --remote ${host} ${port} --resolv-retry infinite --nobind --persist-key --persist-tun --comp-lzo --verb 3 --ca ca.crt --cert client.crt --key client.key --tls-auth ta.key 1 > $log_path 2>&1 &
     echo "Done"
     echo ""
 
