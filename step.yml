@@ -75,7 +75,7 @@ inputs:
       is_expand: true
       is_required: true
       is_sensitive: true
-  - client_crt: "$VPN_TA_KEY_BASE64"
+  - client_crt: "$VPN_CLIENT_CRT_BASE64"
     opts:
       title: "Base64 encoded Client Certificate"
       summary: "Base64 encoded Client Certificate"
