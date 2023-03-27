@@ -44,7 +44,6 @@ verb 3
 cipher AES-256-CBC
 auth SHA256
 key-direction 1
-comp-lzo
 EOF
 
     echo ""
@@ -72,7 +71,7 @@ EOF
     echo ""
 
     echo "Run openvpn"
-      sudo openvpn --client --dev tun --proto ${proto} --remote ${host} ${port} --resolv-retry infinite --nobind --persist-key --persist-tun --comp-lzo --verb 3 --ca ca.crt --cert client.crt --key client.key --tls-auth ta.key 1 --key-direction 1 --auth SHA256 --cipher AES-256-CBC > $log_path 2>&1 &
+      sudo openvpn --client --dev tun --proto ${proto} --remote ${host} ${port} --resolv-retry infinite --nobind --persist-key --persist-tun --verb 3 --ca ca.crt --cert client.crt --key client.key --tls-auth ta.key 1 --key-direction 1 --auth SHA256 --cipher AES-256-CBC > $log_path 2>&1 &
     echo "Done"
     echo ""
 
